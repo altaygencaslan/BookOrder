@@ -1,0 +1,434 @@
+{
+	"info": {
+		"_postman_id": "b881bd7b-7c24-4955-85ea-23036a1b3ff2",
+		"name": "BookOrder_AltayGençaslan",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7020935"
+	},
+	"item": [
+		{
+			"name": "1-Login",
+			"item": [
+				{
+					"name": "Token-Get",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userName\": \"altay.gencaslan\",\r\n  \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:32773/api/Login",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "32773",
+							"path": [
+								"api",
+								"Login"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://localhost:44367/api/Customer' \\\r\n  -H 'accept: */*'"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2-Customer",
+			"item": [
+				{
+					"name": "Customer-Get-Paging",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzM0ODIyMjIsImlzcyI6IlZhbGlkSXNzdWVyIiwiYXVkIjoiVmFsaWRBdWRpZW5jZSJ9.31HW8KbEUM8uC9e7sfMRVCiGleHw0_cJk2q2KC1hvUE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:32773/api/Customer?page=1&size=10",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "32773",
+							"path": [
+								"api",
+								"Customer"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://localhost:44367/api/Customer' \\\r\n  -H 'accept: */*'"
+					},
+					"response": []
+				},
+				{
+					"name": "Customer-Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Altay\",\r\n  \"lastName\": \"Gençaslan\",\r\n  \"userName\": \"altay.gencaslan\",\r\n  \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:32787/api/Customer",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "32787",
+							"path": [
+								"api",
+								"Customer"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://localhost:44367/api/Customer' \\\r\n  -H 'accept: */*'"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "3-Book",
+			"item": [
+				{
+					"name": "Book-Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzM0ODIyMjIsImlzcyI6IlZhbGlkSXNzdWVyIiwiYXVkIjoiVmFsaWRBdWRpZW5jZSJ9.31HW8KbEUM8uC9e7sfMRVCiGleHw0_cJk2q2KC1hvUE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Robotlar ve İmparatorluk: Robot Serisi 4. Kitap\",\r\n  \"author\": \"Isaac Asimov\",\r\n  \"stock\": 10,\r\n  \"amount\": 212.5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:32773/api/Book",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "32773",
+							"path": [
+								"api",
+								"Book"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://localhost:44367/api/Customer' \\\r\n  -H 'accept: */*'"
+					},
+					"response": []
+				},
+				{
+					"name": "Book-Put",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzM0ODIyMjIsImlzcyI6IlZhbGlkSXNzdWVyIiwiYXVkIjoiVmFsaWRBdWRpZW5jZSJ9.31HW8KbEUM8uC9e7sfMRVCiGleHw0_cJk2q2KC1hvUE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\":\"fadab50e-766f-4060-9aea-b91516a0f442\",\r\n  \"name\": \"Robotlar ve İmparatorluk: Robot Serisi 4. Kitap\",\r\n  \"author\": \"Isaac Asimov\",\r\n  \"stock\": 5,\r\n  \"amount\": 212.5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:32773/api/Book",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "32773",
+							"path": [
+								"api",
+								"Book"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://localhost:44367/api/Customer' \\\r\n  -H 'accept: */*'"
+					},
+					"response": []
+				},
+				{
+					"name": "Book-Get-Paging",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzM0ODIyMjIsImlzcyI6IlZhbGlkSXNzdWVyIiwiYXVkIjoiVmFsaWRBdWRpZW5jZSJ9.31HW8KbEUM8uC9e7sfMRVCiGleHw0_cJk2q2KC1hvUE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:32773/api/Book?page=1&size=10",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "32773",
+							"path": [
+								"api",
+								"Book"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://localhost:44367/api/Customer' \\\r\n  -H 'accept: */*'"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "4-Order",
+			"item": [
+				{
+					"name": "Order-Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzM0ODIyMjIsImlzcyI6IlZhbGlkSXNzdWVyIiwiYXVkIjoiVmFsaWRBdWRpZW5jZSJ9.31HW8KbEUM8uC9e7sfMRVCiGleHw0_cJk2q2KC1hvUE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"bookId\": \"fadab50e-766f-4060-9aea-b91516a0f442\",\r\n  \"customerId\": \"d9ea8904-6b32-49f4-8cca-e8b6bd13c350\",\r\n  \"quantity\": 2,\r\n  \"orderDate\": \"2024-11-05T22:59:13.181Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:32773/api/Order",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "32773",
+							"path": [
+								"api",
+								"Order"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://localhost:44367/api/Customer' \\\r\n  -H 'accept: */*'"
+					},
+					"response": []
+				},
+				{
+					"name": "Order-Get",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzM0ODIyMjIsImlzcyI6IlZhbGlkSXNzdWVyIiwiYXVkIjoiVmFsaWRBdWRpZW5jZSJ9.31HW8KbEUM8uC9e7sfMRVCiGleHw0_cJk2q2KC1hvUE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"customerId\": \"d9ea8904-6b32-49f4-8cca-e8b6bd13c350\",\r\n  \"startDate\": \"2024-10-05T23:00:38.727Z\",\r\n  \"endDate\": \"2024-12-07T23:00:38.727Z\",\r\n  \"isDesc\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:32773/api/Order",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "32773",
+							"path": [
+								"api",
+								"Order"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://localhost:44367/api/Customer' \\\r\n  -H 'accept: */*'"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "5-Statistic",
+			"item": [
+				{
+					"name": "Statistic-Get",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzM0ODIyMjIsImlzcyI6IlZhbGlkSXNzdWVyIiwiYXVkIjoiVmFsaWRBdWRpZW5jZSJ9.31HW8KbEUM8uC9e7sfMRVCiGleHw0_cJk2q2KC1hvUE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:32773/api/Statistic?customerId=d9ea8904-6b32-49f4-8cca-e8b6bd13c350",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "32773",
+							"path": [
+								"api",
+								"Statistic"
+							],
+							"query": [
+								{
+									"key": "customerId",
+									"value": "d9ea8904-6b32-49f4-8cca-e8b6bd13c350"
+								}
+							]
+						},
+						"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://localhost:44367/api/Customer' \\\r\n  -H 'accept: */*'"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
