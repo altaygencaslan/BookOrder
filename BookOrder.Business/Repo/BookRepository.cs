@@ -14,9 +14,9 @@ namespace BookOrder.Business.Repo
 {
     public class BookRepository : IBookRepository
     {
-        private readonly BookOrderDbContext _dbContext;
+        private readonly IBookOrderDbContext _dbContext;
 
-        public BookRepository(BookOrderDbContext dbContext)
+        public BookRepository(IBookOrderDbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -63,6 +63,7 @@ namespace BookOrder.Business.Repo
         public async Task<ResultDto<List<BookDto>>> GetAllAsync(PaginationDto pagination, CancellationToken cancellationToken)
         {
             var data = await _dbContext.Books
+                             .AsNoTracking()
                              .Skip((pagination.Page - 1) * pagination.Size)
                              .Take(pagination.Size)
                              .Select(s => new BookDto

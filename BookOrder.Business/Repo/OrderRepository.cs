@@ -13,17 +13,17 @@ namespace BookOrder.Business.Repo
 {
     public class OrderRepository : IOrderRepository
     {
-        BookOrderDbContext _dbContext;
+        IBookOrderDbContext _dbContext;
         readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
-        public OrderRepository(BookOrderDbContext dbContext)
+        public OrderRepository(IBookOrderDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
         public async Task<ResultDto<List<OrderDetailDto>>> FindOrdersAsync(OrderSearchDto searchDto, CancellationToken cancellationToken)
         {
-            var query = _dbContext.Orders.AsQueryable();
+            var query = _dbContext.Orders.AsNoTracking().AsQueryable();
 
             if (searchDto.StartDate.HasValue && searchDto.StartDate > DateTime.MinValue)
             {
@@ -70,6 +70,9 @@ namespace BookOrder.Business.Repo
 
         public async Task<ResultDto<bool>> OrderBookAsync(OrderCreateDto dto, CancellationToken cancellationToken)
         {
+            //Distrubuted Lock Chech from Redis:
+            //if lock key filled return to unavailable process or ask to ChatGPT
+
             await _semaphore.WaitAsync(cancellationToken);
             try
             {
@@ -79,51 +82,48 @@ namespace BookOrder.Business.Repo
                     Gerçek dünyada DB'de güvenli stok düşülmesi adına buraların açılması gerekir.
                  */
 
-                //using (var transaction = _dbContext.Database.BeginTransaction())
-                //{
-                try
+                using (var transaction = await _dbContext.BeginTransactionAsync())
                 {
-                    var book = await _dbContext.Books
-                                   .Where(w => w.Id == dto.BookId)
-                                   .FirstOrDefaultAsync(cancellationToken);
-
-                    if (book == null || book?.Id == Guid.Empty)
-                        return new ResultDto<bool>(ResultMessages.ORDER_CANNOT_FIND_BOOK);
-
-                    if (book?.Stock < dto.Quantity) 
-                        return new ResultDto<bool>(ResultMessages.ORDER_NOT_ENOUGHT_STOCK);
-
-                    DecreaseStock(book, dto.Quantity);
-
-                    Order entity = new Order
+                    try
                     {
-                        Id = Guid.NewGuid(),
-                        CustomerId = dto.CustomerId,
-                        BookId = dto.BookId,
-                        Quantity = dto.Quantity,
-                        OrderDate = dto.OrderDate,
-                        TotalAmount = dto.Quantity * book!.Amount,
-                    };
+                        var book = await _dbContext.Books
+                                       .Where(w => w.Id == dto.BookId)
+                                       .FirstOrDefaultAsync(cancellationToken);
 
-                    _dbContext.Orders.Add(entity);
+                        if (book == null || book?.Id == Guid.Empty)
+                            return new ResultDto<bool>(ResultMessages.ORDER_CANNOT_FIND_BOOK);
 
-                    if (await _dbContext.SaveChangesAsync(cancellationToken) > 0)
-                    {
-                        //transaction.Commit();
-                        return new ResultDto<bool>(true);
+                        if (book?.Stock < dto.Quantity)
+                            return new ResultDto<bool>(ResultMessages.ORDER_NOT_ENOUGHT_STOCK);
+
+                        DecreaseStock(book, dto.Quantity);
+
+                        Order entity = new Order
+                        {
+                            Id = Guid.NewGuid(),
+                            CustomerId = dto.CustomerId,
+                            BookId = dto.BookId,
+                            Quantity = dto.Quantity,
+                            OrderDate = dto.OrderDate,
+                            TotalAmount = dto.Quantity * book!.Amount,
+                        };
+
+                        _dbContext.Orders.Add(entity);
+                        bool status = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
+                        if (status)
+                            await transaction.CommitAsync(cancellationToken);
+                        else
+                            await transaction.RollbackAsync(cancellationToken);
+
+                        return new ResultDto<bool>(status, status ? string.Empty : ResultMessages.ORDER_CANNOT_CREATE);
                     }
-                    else
+                    catch (Exception e)
                     {
-                        //transaction.Rollback();
-                        return new ResultDto<bool>(false, ResultMessages.ORDER_CANNOT_CREATE);
+                        await transaction.RollbackAsync(cancellationToken);
+                        return new ResultDto<bool>(ResultMessages.ORDER_CANNOT_CREATE);
                     }
+
                 }
-                catch (Exception e)
-                {
-                    //transaction.Rollback();
-                    return new ResultDto<bool>(ResultMessages.ORDER_CANNOT_CREATE);
-                }
-                //}
             }
             finally
             {

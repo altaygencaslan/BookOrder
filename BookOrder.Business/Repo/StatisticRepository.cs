@@ -12,9 +12,9 @@ namespace BookOrder.Business.Repo
 {
     public class StatisticRepository : IStatisticRepository
     {
-        BookOrderDbContext _dbContext;
+        IBookOrderDbContext _dbContext;
 
-        public StatisticRepository(BookOrderDbContext dbContext)
+        public StatisticRepository(IBookOrderDbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -22,6 +22,7 @@ namespace BookOrder.Business.Repo
         public async Task<ResultDto<StatisticDto>> GetStatisticAsync(Guid customerId, CancellationToken cancellationToken)
         {
             var data = await _dbContext.Orders
+                                   .AsNoTracking()
                                    .Where(w => w.CustomerId == customerId)
                                    .ToListAsync(cancellationToken);
 
@@ -29,6 +30,7 @@ namespace BookOrder.Business.Repo
                 return new ResultDto<StatisticDto>(ResultMessages.STATISTIC_CANNOT_FIND_ANY_DATA);
 
             var result = await _dbContext.Orders
+                                   .AsNoTracking()
                                    .Where(w => w.CustomerId == customerId)
                                    .GroupBy(w => w.OrderDate.Month + "-" + w.OrderDate.Year)
                                    .Select(s => new StatisticDto

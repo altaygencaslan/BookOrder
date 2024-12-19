@@ -14,9 +14,9 @@ namespace BookOrder.Business.Repo
 {
     public class LoginRepository : ILoginRepository
     {
-        BookOrderDbContext _dbContext;
+        IBookOrderDbContext _dbContext;
 
-        public LoginRepository(BookOrderDbContext dbContext)
+        public LoginRepository(IBookOrderDbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -24,6 +24,7 @@ namespace BookOrder.Business.Repo
         public async Task<ResultDto<string>> LoginAsync(LoginDto dto, CancellationToken cancellationToken)
         {
             var customer = await _dbContext.Customers
+                                           .AsNoTracking()
                                            .Where(w => w.Email == dto.Email &&
                                                        w.Password == dto.Password)
                                            .FirstOrDefaultAsync(cancellationToken);

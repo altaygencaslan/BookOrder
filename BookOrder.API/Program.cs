@@ -16,6 +16,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<BookOrderDbContext>(options => options.UseInMemoryDatabase("bookOrderDatabase"));
 
+builder.Services.AddScoped<IBookOrderDbContext, BookOrderDbContext>();
 builder.Services.AddScoped<ILoginRepository, LoginRepository>();
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();

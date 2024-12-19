@@ -13,9 +13,9 @@ namespace BookOrder.Business.Repo
 {
     public class CustomerRepository : ICustomerRepository
     {
-        BookOrderDbContext _dbContext;
+        IBookOrderDbContext _dbContext;
 
-        public CustomerRepository(BookOrderDbContext dbContext)
+        public CustomerRepository(IBookOrderDbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -47,6 +47,7 @@ namespace BookOrder.Business.Repo
         public async Task<ResultDto<List<CustomerDto>>> GetAllAsync(PaginationDto pagination, CancellationToken cancellationToken)
         {
             var data = await _dbContext.Customers
+                             .AsNoTracking()
                              .Skip((pagination.Page - 1) * pagination.Size)
                              .Take(pagination.Size)
                              .Select(s => new CustomerDto

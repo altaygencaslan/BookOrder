@@ -1,5 +1,7 @@
-﻿using BookOrder.Data.Domain;
+﻿using BookOrder.Business.Repo.Interfaces;
+using BookOrder.Data.Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BookOrder.Business.Repo
 {
-    public class BookOrderDbContext : DbContext
+    public class BookOrderDbContext : DbContext, IBookOrderDbContext
     {
         public BookOrderDbContext(DbContextOptions options) : base(options)
         {
@@ -19,6 +21,11 @@ namespace BookOrder.Business.Repo
         public DbSet<Book> Books { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Order> Orders { get; set; }
+
+        public async Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)
+        {
+            return await Database.BeginTransactionAsync(cancellationToken);
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

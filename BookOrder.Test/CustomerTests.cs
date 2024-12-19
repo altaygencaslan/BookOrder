@@ -15,7 +15,7 @@ namespace BookOrder.Test
         public void Setup()
         {
             var services = new ServiceCollection();
-            services.AddDbContext<BookOrderDbContext>(options =>
+            services.AddDbContext<IBookOrderDbContext, BookOrderDbContext>(options =>
                 options.UseInMemoryDatabase($"BookOrderDbContext_{Guid.NewGuid()}"));
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             _serviceProvider = services.BuildServiceProvider();
